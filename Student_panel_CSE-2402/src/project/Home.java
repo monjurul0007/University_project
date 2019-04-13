@@ -11,7 +11,6 @@ import com.mysql.jdbc.Statement;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -25,9 +24,6 @@ public class Home extends JFrame{
 	static Connection conn = null;
 	
 	private Container c;
-	private static JTextField idTxt;
-	
-	private String id = null;
 	
 	Home(String s){
 		setBounds(400, 100, 800, 600);
@@ -90,7 +86,6 @@ public class Home extends JFrame{
 			stm = (Statement) conn.createStatement();
 			rs = stm.executeQuery(sql);
 			if(rs.next()) {
-				id =  rs.getString("id");
 				name =  rs.getString("name");
 				dept =  rs.getString("dept");
 				phone =  rs.getString("phone");
@@ -101,7 +96,7 @@ public class Home extends JFrame{
 			JOptionPane.showMessageDialog(null, e);
 		}
 		
-		JLabel ID = new JLabel(id);
+		JLabel ID = new JLabel(sid);
 		ID.setBounds(266, 118, 459, 29);
 		c.add(ID);
 		
@@ -122,6 +117,17 @@ public class Home extends JFrame{
 		c.add(Cgpa);
 		
 		JButton btnLogout = new JButton("Logout");
+		btnLogout.setBounds(128, 452, 142, 25);
+		c.add(btnLogout);
+		
+		JButton btnDeleteProfile = new JButton("Delete Profile");
+		btnDeleteProfile.setBounds(339, 452, 142, 25);
+		c.add(btnDeleteProfile);
+		
+		JButton btnExit = new JButton("Exit");
+		btnExit.setBounds(557, 452, 114, 25);
+		c.add(btnExit);
+		
 		btnLogout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				LoginPage log = new LoginPage();
@@ -129,17 +135,17 @@ public class Home extends JFrame{
 				log.setVisible(true);
 			}
 		});
-		btnLogout.setBounds(190, 452, 142, 25);
-		c.add(btnLogout);
 		
-		JButton btnDeleteProfile = new JButton("Delete Profile");
+		
 		btnDeleteProfile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					String sql = "DELETE FROM students WHERE id='"+id+"';";
+					String sql = "DELETE FROM students WHERE id='"+sid+"';";
+					
 					conn = DBConnection.ConnecrDb();
 					stm = (Statement) conn.createStatement();
 					stm.executeUpdate(sql);
+					
 					JOptionPane.showMessageDialog(null, "Profile Deleted!");
 					LoginPage log = new LoginPage();
 					setVisible(false);
@@ -149,8 +155,12 @@ public class Home extends JFrame{
 				}
 			}
 		});
-		btnDeleteProfile.setBounds(455, 452, 142, 25);
-		getContentPane().add(btnDeleteProfile);
+		
+		btnExit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.exit(0);
+			}
+		});
 		
 	}
 }

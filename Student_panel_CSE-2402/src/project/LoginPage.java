@@ -33,7 +33,6 @@ public class LoginPage extends JFrame{
 	static private JButton btnLogin;
 	
 	LoginPage(){
-		System.out.println("a");
 		setBounds(400, 100, 800, 600);
 		setTitle("Java Lab Project");
 		setResizable(true);
@@ -47,8 +46,6 @@ public class LoginPage extends JFrame{
 	}
 	
 	public void initComponents(){
-		System.out.println("b");
-		conn = DBConnection.ConnecrDb();
 		
 		JLabel lblId = new JLabel("Student ID : ");
 		lblId.setFont(new Font("Dialog", Font.BOLD, 15));
@@ -74,8 +71,12 @@ public class LoginPage extends JFrame{
 		c.add(btnLogin);
 		
 		btnRegister = new JButton("Register");
-		btnRegister.setBounds(473, 475, 114, 25);
+		btnRegister.setBounds(369, 475, 114, 25);
 		c.add(btnRegister);
+		
+		JButton btnExit = new JButton("Exit");
+		btnExit.setBounds(554, 475, 114, 25);
+		c.add(btnExit);
 		
 		img = new ImageIcon(getClass().getResource("iiuc.png"));
 		JLabel image = new JLabel(img);
@@ -89,8 +90,10 @@ public class LoginPage extends JFrame{
 					String pass = passTxt.getText();
 					String sql = "SELECT * FROM students WHERE id='"+id+"' && password='"+pass+"';";
 					
+					conn = DBConnection.ConnecrDb();
 					stm = (Statement) conn.createStatement();
 					rs = stm.executeQuery(sql);
+					
 					if(rs.next()) {
 						setVisible(false);
 						Home ho = new Home(id);
@@ -114,10 +117,15 @@ public class LoginPage extends JFrame{
 			}
 		});
 		
+		btnExit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.exit(0);
+			}
+		});
+		
 	}
 
 	public static void main(String[] args) {
-		System.out.println("c");
 		LoginPage f = new LoginPage();
 		f.setVisible(true);
 	}

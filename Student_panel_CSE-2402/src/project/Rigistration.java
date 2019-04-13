@@ -46,8 +46,6 @@ public class Rigistration extends JFrame{
 	
 	public void initComponents(){
 		
-		conn = DBConnection.ConnecrDb();
-		
 		JLabel heading = new JLabel("Student Information Registration");
 		heading.setFont(new Font("Dialog", Font.BOLD | Font.ITALIC, 30));
 		heading.setBounds(108, 12, 572, 55);
@@ -113,6 +111,13 @@ public class Rigistration extends JFrame{
 		c.add(passTxt);
 		
 		JButton btnRegister = new JButton("Register");
+		btnRegister.setBounds(185, 480, 114, 25);
+		c.add(btnRegister);
+		
+		JButton btnCancle = new JButton("Cancel");
+		btnCancle.setBounds(467, 480, 114, 25);
+		c.add(btnCancle);
+		
 		btnRegister.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try{
@@ -123,9 +128,11 @@ public class Rigistration extends JFrame{
 					String password = passTxt.getText();
 					String cgpa = cgpaTxt.getText();
 					String sql = "INSERT INTO students(id,name,dept,phone,password,cgpa) VALUES('"+id+"','"+name+"','"+dept+"','"+phone+"','"+password+"',"+cgpa+");";
-					System.out.println(sql);
+					
+					conn = DBConnection.ConnecrDb();
 					stm = (Statement) conn.createStatement();
 					stm.executeUpdate(sql);
+					
 					JOptionPane.showMessageDialog(null, "Registration Succesfull!");
 					LoginPage log = new LoginPage();
 					log.setVisible(true);
@@ -137,10 +144,7 @@ public class Rigistration extends JFrame{
 				
 			}
 		});
-		btnRegister.setBounds(185, 480, 114, 25);
-		c.add(btnRegister);
 		
-		JButton btnCancle = new JButton("Cancel");
 		btnCancle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				LoginPage log = new LoginPage();
@@ -148,7 +152,6 @@ public class Rigistration extends JFrame{
 				setVisible(false);
 			}
 		});
-		btnCancle.setBounds(467, 480, 114, 25);
-		c.add(btnCancle);
+		
 	}
 }
